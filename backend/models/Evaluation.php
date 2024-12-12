@@ -1,7 +1,6 @@
 <?php
 
-class Evaluation
-{
+class Evaluation{
     private $pdo;
 
     public function __construct(PDO $pdo)
@@ -26,6 +25,14 @@ class Evaluation
         $evl->execute();
 
         return $evl->fetch(PDO::FETCH_ASSOC);
+    }
+    public function getAll(): array{
+        try {
+            $stmt = $this->pdo->query("SELECT * FROM evaluations");
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return []; 
+        }
     }
 
     public function getByEmployeeId(int $employeeId): array

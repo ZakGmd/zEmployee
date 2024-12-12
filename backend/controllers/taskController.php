@@ -1,7 +1,7 @@
 <?php
 
-require_once 'Database.php';
-require_once 'Task.php';
+require_once '../config/database.php';
+require_once '../models/Tasks.php';
 
 class TaskController
 {
@@ -59,7 +59,19 @@ class TaskController
             echo json_encode(['message' => 'Database error: ' . $e->getMessage()]);
         }
     }
+    public function getAll(){
+        try {
+            $taskModel = new Task($this->pdo);
+            $tasks = $taskModel->getAll();
 
+            http_response_code(200);
+            header('Content-Type: application/json');
+            echo json_encode($tasks);
+        } catch (PDOException $e) {
+            http_response_code(500);
+            echo json_encode(['message' => 'Database error: ' . $e->getMessage()]);
+        }
+    }
     public function getByEmployeeId($employeeId){
         try {
             $taskModel = new Task($this->pdo);

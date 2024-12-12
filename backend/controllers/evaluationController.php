@@ -1,7 +1,7 @@
 <?php
 
-require_once 'Database.php';
-require_once 'Evaluation.php';
+require_once '../config/database.php';
+require_once '../models/Evaluation.php';
 
 class EvaluationController
 {
@@ -54,6 +54,19 @@ class EvaluationController
                 http_response_code(404);
                 echo json_encode(['message' => 'Evaluation not found']);
             }
+        } catch (PDOException $e) {
+            http_response_code(500);
+            echo json_encode(['message' => 'Database error: ' . $e->getMessage()]);
+        }
+    }
+    public function getAll(){
+        try {
+            $evaluationModel = new Evaluation($this->pdo);
+            $evaluations = $evaluationModel->getAll();
+
+            http_response_code(200);
+            header('Content-Type: application/json');
+            echo json_encode($evaluations);
         } catch (PDOException $e) {
             http_response_code(500);
             echo json_encode(['message' => 'Database error: ' . $e->getMessage()]);

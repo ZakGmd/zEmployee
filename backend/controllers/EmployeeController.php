@@ -1,9 +1,8 @@
 <?php
+require_once '../config/database.php';
+require_once '../models/Employe.php';
 
-require_once 'Database.php'; 
-
-class EmployeeController
-{
+class EmployeeController{
     private $pdo;
 
     public function __construct()
@@ -12,18 +11,22 @@ class EmployeeController
         $this->pdo = $db->getConnection();
     }
 
-    public function getAll()
-    {
-        $sql = "SELECT * FROM employes";
-        $empl = $this->pdo->query($sql);
-        $employees = $empl->fetchAll(PDO::FETCH_ASSOC);
-
-        header('Content-Type: application/json');
-        echo json_encode($employees);
+    public function getAll() {
+        try {
+            $sql = "SELECT * FROM employees";
+            $stmt = $this->pdo->query($sql);
+            $employees = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+            header('Content-Type: application/json');
+            echo json_encode($employees); 
+        } catch (PDOException $e) {
+           
+            http_response_code(500);
+            echo json_encode(['message' => 'Database error: ' . $e->getMessage()]);
+        }
     }
 
-    public function get($id)
-    {
+    public function get($id) {
         $empl = $this->pdo->prepare("SELECT * FROM employes WHERE id = :id");
         $empl->bindParam(':id', $id);
         $empl->execute();
@@ -38,8 +41,7 @@ class EmployeeController
         }
     }
 
-    public function create()
-    {
+    public function create() {
         $data = json_decode(file_get_contents('php://input'), true);
 
         if (!isset($data['name']) || !isset($data['position']) || !isset($data['salary'])) {
@@ -66,8 +68,7 @@ class EmployeeController
         }
     }
 
-    public function update($id)
-    {
+    public function update($id){
         $data = json_decode(file_get_contents('php://input'), true);
 
         if (!isset($data['name']) || !isset($data['position']) || !isset($data['salary'])) {
@@ -95,8 +96,7 @@ class EmployeeController
         }
     }
 
-    public function delete($id)
-    {
+    public function delete($id){
         $empl = $this->pdo->prepare("DELETE FROM employes WHERE id = :id");
         $empl->bindParam(':id', $id);
 
