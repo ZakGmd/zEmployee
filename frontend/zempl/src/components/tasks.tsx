@@ -10,9 +10,9 @@ interface Task {
 
 const Tasks = () => {
   const [tasks, setTasks] = useState<Task[]>([
-    { id: 1, description: 'Complete project proposal', assignee: 'John Doe', completed: false },
-    { id: 2, description: 'Review design mockups', assignee: 'Jane Smith', completed: true },
-    { id: 3, description: 'Implement new feature', assignee: 'Mike Johnson', completed: false },
+    { id: 1, description: 'Complete project proposal', assignee: 'Zak', completed: false },
+    { id: 2, description: 'Review design mockups', assignee: 'Aya', completed: true },
+    { id: 3, description: 'Implement new feature', assignee: 'Manzakin', completed: false },
   ]);
 
   const [newTask, setNewTask] = useState({ description: '', assignee: '' });
@@ -54,7 +54,7 @@ const Tasks = () => {
         />
         <button
           onClick={addTask}
-          className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 flex items-center"
+          className="bg-black/90  transition-all duration-300 text-white px-4 py-2 rounded hover:bg-black flex items-center"
         >
           <Plus size={20} className="mr-2" />
           Add Task
@@ -69,15 +69,15 @@ const Tasks = () => {
             <div className="flex items-center space-x-2">
               <button
                 onClick={() => toggleTaskCompletion(task.id)}
-                className={`p-2 rounded ${
-                  task.completed ? 'bg-gray-300 hover:bg-gray-400' : 'bg-green-500 hover:bg-green-600'
+                className={`p-2 rounded  transition-all duration-300 ${
+                  task.completed ? 'bg-gray-300 hover:bg-gray-400' : 'bg-green-700 hover:bg-green-600'
                 }`}
               >
                 {task.completed ? <X size={20} /> : <Check size={20} />}
               </button>
               <button
                 onClick={() => deleteTask(task.id)}
-                className="bg-red-500 text-white p-2 rounded hover:bg-red-600"
+                className="bg-red-600 text-white p-2 rounded hover:bg-red-700 transition-all duration-300"
               >
                 <Trash2 size={20} />
               </button>

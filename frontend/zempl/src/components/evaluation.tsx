@@ -8,9 +8,9 @@ interface EmployeePerformance {
 
 const Evaluation = () => {
   const [performanceData, setPerformanceData] = useState<EmployeePerformance[]>([
-    { name: 'John Doe', performance: 85 },
-    { name: 'Jane Smith', performance: 92 },
-    { name: 'Mike Johnson', performance: 78 },
+    { name: 'Zak', performance: 85 },
+    { name: 'Aya', performance: 92 },
+    { name: 'Manzakin', performance: 28 },
   ]);
 
   const [newEvaluation, setNewEvaluation] = useState({ name: '', performance: '' });
@@ -33,20 +33,20 @@ const Evaluation = () => {
         <input
           type="text"
           placeholder="Employee Name"
-          className="border p-2 rounded"
+          className="border p-2 rounded outline-none"
           value={newEvaluation.name}
           onChange={(e) => setNewEvaluation({ ...newEvaluation, name: e.target.value })}
         />
         <input
           type="number"
           placeholder="Performance Score"
-          className="border p-2 rounded"
+          className="border p-2 rounded outline-none"
           value={newEvaluation.performance}
           onChange={(e) => setNewEvaluation({ ...newEvaluation, performance: e.target.value })}
         />
         <button
           onClick={addEvaluation}
-          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+          className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-600  transition-all duration-300"
         >
           Add Evaluation
         </button>
@@ -67,7 +67,7 @@ const Evaluation = () => {
               <span>{data.name}: {data.performance}</span>
               <button
                 onClick={() => deleteEvaluation(data.name)}
-                className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                className="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700  transition-all duration-300"
               >
                 Delete
               </button>
