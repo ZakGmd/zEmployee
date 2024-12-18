@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Plus } from 'lucide-react';
+import { getEmployees } from '../services/api';
 
 interface Employee {
   id: number;
@@ -9,11 +10,19 @@ interface Employee {
 }
 
 const Employees = () => {
-  const [employees, setEmployees] = useState<Employee[]>([
-    { id: 1, name: 'Zak', position: 'Software Engineer', department: 'Engineering' },
-    { id: 2, name: 'Aya', position: 'Product Manager', department: 'Product' },
-    { id: 3, name: 'Manzakin', position: 'Designer', department: 'Design' },
-  ]);
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const employees  = await getEmployees();
+        console.log({employees})
+      } catch (error) {
+        console.error('Error fetching employees:', error);
+      }
+    };
+
+    fetchEmployees();
+  }, []);
 
   const [newEmployee, setNewEmployee] = useState({ name: '', position: '', department: '' });
 

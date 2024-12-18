@@ -9,7 +9,7 @@ export interface Employee {
   
   export const getEmployees = async (): Promise<Employee[]> => {
     try {
-      const response = await fetch(`${apiUrl}employees`,{ mode: 'no-cors' });
+      const response = await fetch(`${apiUrl}evaluations`,{ mode: 'no-cors' });
       if (!response.ok) {
         const errorData = await response.json();
         console.error('Error fetching employees:', errorData);
