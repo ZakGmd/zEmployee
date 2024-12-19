@@ -1,83 +1,67 @@
-import { useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { ArrowUp, ArrowDown } from 'lucide-react';
 
-interface EmployeePerformance {
-  name: string;
-  performance: number;
-}
+const data = [
+  { name: 'Bobby Nolan', score: 85, improvement: 5 },
+  { name: 'Adison Kennedy', score: 92, improvement: -2 },
+  { name: 'Charles Dorwart', score: 78, improvement: 8 },
+];
 
-const Evaluation = () => {
-  const [performanceData, setPerformanceData] = useState<EmployeePerformance[]>([
-    { name: 'Zak', performance: 85 },
-    { name: 'Aya', performance: 92 },
-    { name: 'Manzakin', performance: 28 },
-  ]);
-
-  const [newEvaluation, setNewEvaluation] = useState({ name: '', performance: '' });
-
-  const addEvaluation = () => {
-    if (newEvaluation.name && newEvaluation.performance) {
-      setPerformanceData([...performanceData, { name: newEvaluation.name, performance: parseInt(newEvaluation.performance) }]);
-      setNewEvaluation({ name: '', performance: '' });
-    }
-  };
-
-  const deleteEvaluation = (name: string) => {
-    setPerformanceData(performanceData.filter(data => data.name !== name));
-  };
-
+export default function Evaluation() {
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-4">Employee Evaluation</h2>
-      <div className="mb-4 flex space-x-2">
-        <input
-          type="text"
-          placeholder="Employee Name"
-          className="border p-2 rounded outline-none"
-          value={newEvaluation.name}
-          onChange={(e) => setNewEvaluation({ ...newEvaluation, name: e.target.value })}
-        />
-        <input
-          type="number"
-          placeholder="Performance Score"
-          className="border p-2 rounded outline-none"
-          value={newEvaluation.performance}
-          onChange={(e) => setNewEvaluation({ ...newEvaluation, performance: e.target.value })}
-        />
-        <button
-          onClick={addEvaluation}
-          className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-600  transition-all duration-300"
-        >
-          Add Evaluation
-        </button>
-      </div>
-      <BarChart width={600} height={300} data={performanceData}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="performance" fill="#8884d8" />
-      </BarChart>
-      <div className="mt-4">
-        <h3 className="text-xl font-semibold mb-2">Employee Evaluations</h3>
-        <ul className="space-y-2">
-          {performanceData.map((data) => (
-            <li key={data.name} className="flex items-center justify-between bg-white p-2 rounded shadow">
-              <span>{data.name}: {data.performance}</span>
-              <button
-                onClick={() => deleteEvaluation(data.name)}
-                className="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700  transition-all duration-300"
+    <div className="space-y-6">
+      <h2 className="text-2xl font-semibold">Performance Evaluation</h2>
+
+      <div className="grid gap-4 md:grid-cols-3">
+        {data.map((item) => (
+          <div
+            key={item.name}
+            className="bg-[#1A1B21] border border-gray-800 rounded-lg p-4 space-y-2"
+          >
+            <div className="flex justify-between items-center">
+              <h3 className="font-medium">{item.name}</h3>
+              <span
+                className={`flex items-center ${
+                  item.improvement > 0 ? 'text-green-500' : 'text-red-500'
+                }`}
               >
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
+                {item.improvement > 0 ? (
+                  <ArrowUp className="h-4 w-4" />
+                ) : (
+                  <ArrowDown className="h-4 w-4" />
+                )}
+                {Math.abs(item.improvement)}%
+              </span>
+            </div>
+            <div className="text-3xl font-bold">{item.score}%</div>
+            <div className="w-full bg-gray-800 rounded-full h-2">
+              <div
+                className="bg-purple-600 rounded-full h-2"
+                style={{ width: `${item.score}%` }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="bg-[#1A1B21] border border-gray-800 rounded-lg p-4 h-[400px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#2D2D3A" />
+            <XAxis dataKey="name" stroke="#9CA3AF" />
+            <YAxis stroke="#9CA3AF" />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: '#1A1B21',
+                border: '1px solid #374151',
+                borderRadius: '0.5rem',
+              }}
+            />
+            <Bar dataKey="score" fill="#7C3AED" radius={[4, 4, 0, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );
-};
-
-export default Evaluation;
+}
 

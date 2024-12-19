@@ -1,93 +1,74 @@
-import { useState } from 'react';
-import { Plus, Check, X, Trash2 } from 'lucide-react';
+import { Plus, CheckCircle2, Circle, MoreVertical } from 'lucide-react';
 
 interface Task {
   id: number;
-  description: string;
+  title: string;
   assignee: string;
-  completed: boolean;
+  avatar: string;
+  status: 'todo' | 'in-progress' | 'review' | 'done';
 }
 
-const Tasks = () => {
-  const [tasks, setTasks] = useState<Task[]>([
-    { id: 1, description: 'Complete project proposal', assignee: 'Zak', completed: false },
-    { id: 2, description: 'Review design mockups', assignee: 'Aya', completed: true },
-    { id: 3, description: 'Implement new feature', assignee: 'Manzakin', completed: false },
-  ]);
-
-  const [newTask, setNewTask] = useState({ description: '', assignee: '' });
-
-  const addTask = () => {
-    if (newTask.description && newTask.assignee) {
-      setTasks([...tasks, { id: tasks.length + 1, ...newTask, completed: false }]);
-      setNewTask({ description: '', assignee: '' });
-    }
-  };
-
-  const toggleTaskCompletion = (id: number) => {
-    setTasks(tasks.map(task => 
-      task.id === id ? { ...task, completed: !task.completed } : task
-    ));
-  };
-
-  const deleteTask = (id: number) => {
-    setTasks(tasks.filter(task => task.id !== id));
-  };
+export default function Tasks() {
+  const tasks: Task[] = [
+    { id: 1, title: 'Add shared sections to the main menu', assignee: 'Adison Kennedy', avatar: '/placeholder.svg?height=40&width=40', status: 'review' },
+    { id: 2, title: 'Import and export contact feature', assignee: 'Charles Dorwart', avatar: '/placeholder.svg?height=40&width=40', status: 'in-progress' },
+    { id: 3, title: 'Cloud backup feature for premium users', assignee: 'Bobby Nolan', avatar: '/placeholder.svg?height=40&width=40', status: 'todo' },
+  ];
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-4">Tasks</h2>
-      <div className="mb-4 flex space-x-2">
-        <input
-          type="text"
-          placeholder="Task Description"
-          className="border p-2 rounded flex-grow"
-          value={newTask.description}
-          onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Assignee"
-          className="border p-2 rounded"
-          value={newTask.assignee}
-          onChange={(e) => setNewTask({ ...newTask, assignee: e.target.value })}
-        />
-        <button
-          onClick={addTask}
-          className="bg-black/90  transition-all duration-300 text-white px-4 py-2 rounded hover:bg-black flex items-center"
-        >
-          <Plus size={20} className="mr-2" />
-          Add Task
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-semibold">Tasks</h2>
+        <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2">
+          <Plus className="h-5 w-5" />
+          <span>Create Task</span>
         </button>
       </div>
-      <ul className="space-y-2">
+
+      <div className="grid gap-4">
         {tasks.map((task) => (
-          <li key={task.id} className="flex items-center justify-between bg-white p-4 rounded shadow">
-            <span className={`flex-grow ${task.completed ? 'line-through text-gray-500' : ''}`}>
-              {task.description} - Assigned to: {task.assignee}
-            </span>
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={() => toggleTaskCompletion(task.id)}
-                className={`p-2 rounded  transition-all duration-300 ${
-                  task.completed ? 'bg-gray-300 hover:bg-gray-400' : 'bg-green-700 hover:bg-green-600'
-                }`}
-              >
-                {task.completed ? <X size={20} /> : <Check size={20} />}
+          <div
+            key={task.id}
+            className="bg-[#1A1B21] border border-gray-800 rounded-lg p-4 flex items-center justify-between"
+          >
+            <div className="flex items-center space-x-4">
+              <button className="text-gray-400 hover:text-purple-500">
+                {task.status === 'done' ? (
+                  <CheckCircle2 className="h-5 w-5 text-purple-500" />
+                ) : (
+                  <Circle className="h-5 w-5" />
+                )}
               </button>
-              <button
-                onClick={() => deleteTask(task.id)}
-                className="bg-red-600 text-white p-2 rounded hover:bg-red-700 transition-all duration-300"
-              >
-                <Trash2 size={20} />
+              <div>
+                <h3 className="font-medium">{task.title}</h3>
+                <div className="flex items-center space-x-2 mt-1">
+                  <img
+                    src={task.avatar}
+                    alt={task.assignee}
+                    className="h-6 w-6 rounded-full"
+                  />
+                  <span className="text-sm text-gray-400">{task.assignee}</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4">
+              <span className={`
+                px-2 py-1 text-xs rounded-full
+                ${task.status === 'todo' ? 'bg-gray-800 text-gray-300' : ''}
+                ${task.status === 'in-progress' ? 'bg-blue-900 text-blue-300' : ''}
+                ${task.status === 'review' ? 'bg-purple-900 text-purple-300' : ''}
+                ${task.status === 'done' ? 'bg-green-900 text-green-300' : ''}
+              `}>
+                {task.status.replace('-', ' ')}
+              </span>
+              <button className="text-gray-400 hover:text-white">
+                <MoreVertical className="h-5 w-5" />
               </button>
             </div>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
-};
-
-export default Tasks;
+}
 
