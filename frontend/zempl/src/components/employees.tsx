@@ -1,4 +1,5 @@
-import { Plus, MoreVertical, Search, Bell, Settings, User } from 'lucide-react';
+import { Plus, Search} from 'lucide-react';
+import EmployeeCard from './employeeCard';
 
 interface Employee {
   id: number;
@@ -6,14 +7,44 @@ interface Employee {
   position: string;
   status: 'active' | 'offline';
   departement: string;
+  salary: number ;
+  tasks: number ;
+  phone:string ;
+  email: string ;
   avatar: string;
 }
+export type EmployeeCardProps = {
+  employee: Employee;
+
+}
+
+
 
 export default function Employees() {
+ 
+
   const employees: Employee[] = [
-    { id: 1, name: 'Marcos', position: 'UI/UX Designer', departement: "Design", status: 'active', avatar: 'avatar.svg' },
-    { id: 2, name: 'ZAK', position: 'Frontend Developer',departement: "Development", status: 'active', avatar: 'avatar.svg' },
-    { id: 3, name: 'Aya', position: 'Product Manager',departement: "Development", status: 'offline', avatar: 'avatar.svg' },
+    {
+      id: 1, name: 'Marcos', position: 'UI/UX Designer', departement: "Design", status: 'active', avatar: 'avatar.svg',
+      salary: 8220.22,
+      tasks: 300,
+      phone: "0623782122",
+      email: 'weweqwe'
+    },
+    {
+      id: 2, name: 'ZAK', position: 'Frontend Developer', departement: "Development", status: 'active', avatar: 'avatar.svg',
+      salary: 0,
+      tasks: 0,
+      phone: "0623782122",
+      email: ''
+    },
+    {
+      id: 3, name: 'Aya', position: 'Product Manager', departement: "Development", status: 'offline', avatar: 'avatar.svg',
+      salary: 0,
+      tasks: 0,
+      phone: "0623782122",
+      email: ''
+    },
   ];
 
   return (
@@ -36,44 +67,28 @@ export default function Employees() {
           <span>Add Employee</span>
         </button>
         </div>
-        <div className="grid gap-4">
-        {employees.map((employee) => (
-          <div
-            key={employee.id}
-            className="bg-[#ffffff06] hover:bg-[#ffffff08] transition-all duration-300 cursor-pointer backdrop-blur-[400px] shadow-md   rounded-lg p-4 pb-7 max-w-[310px]   items-center justify-between"
-          >
-            <div className='flex item-center justify-between'>
-              <span className="px-2 py-1 text-xs rounded-full bg-purple-900 text-purple-300">
-                {employee.departement}
-              </span>
-              <button className="text-gray-400 hover:text-slate-200 flex justify-end w-full">
-              <MoreVertical className="h-5 w-5" />
-            </button>
-            </div>
-             
-            <div className="flex flex-col items-center h-full mt-4 gap-4 space-x-4">
-              <div className="relative ">
-                <img
-                  src={employee.avatar}
-                  alt={employee.name}
-                  className="h-[100px] w-[100px] rounded-full border border-purple-500/40"
-                />
-                <span
-                  className={`absolute bottom-[12px] right-[8px] h-3 w-3 rounded-full border-2 border-[#1A1B21] ${
-                    employee.status === 'active' ? 'bg-green-500' : 'bg-gray-500'
-                  }`}
-                />
-              </div>
-              <div className='text-center'>
-                <h3 className="font-medium text-white">{employee.name}</h3>
-                <p className="text-sm text-gray-400">{employee.position}</p>
-              </div>
-            </div>
-           
+        <div className='flex items-start gap-8  px-4'>
+          <div className="flex flex-col gap-4">
+          {employees.map((employee) => (
+            <EmployeeCard
+              key={employee.id}
+              employee={employee}
+            
+            />
+            
+          ))}
+
           </div>
-        ))}
-      </div>
+  
+        </div>
+
     </div>
   );
 }
+
+
+
+
+
+
 
